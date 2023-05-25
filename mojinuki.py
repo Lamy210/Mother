@@ -1,7 +1,7 @@
 import PyPDF2
 
 # PDFファイルを開く
-pdf_file = open('./sample.pdf', 'rb')
+pdf_file = open('./rsy2023sem1_GP21A122-5.pdf', 'rb')
 
 # PDFリーダーオブジェクトを作成
 pdf_reader = PyPDF2.PdfFileReader(pdf_file)
@@ -13,7 +13,7 @@ page = pdf_reader.getPage(0)
 text = page.extractText()
 
 # 検索する文字列を指定
-search_string = "example"
+search_string = "企業社会"
 
 # 検索する文字列の座標を取得
 x0, y0, x1, y1 = None, None, None, None

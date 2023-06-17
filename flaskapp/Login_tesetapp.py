@@ -6,7 +6,7 @@ import logging
 
 app = Flask(__name__)
 app.debug = True
-app.secret_key = "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"
+app.secret_key = "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"
 
 # クライアントIDとクライアントシークレットを設定します
 client_id = "-2299155810-1mhkf2k3180vp14v8h6osq618jsr2g58.apps.googleusercontent.com"

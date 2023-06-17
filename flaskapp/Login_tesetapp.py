@@ -9,8 +9,8 @@ app.debug = True
 app.secret_key = "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"
 
 # クライアントIDとクライアントシークレットを設定します
-client_id = "2299155810-1mhkf2k3180vp14v8h6osq618jsr2g58.apps.googleusercontent.com"
-client_secret = "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"
+client_id = "-2299155810-1mhkf2k3180vp14v8h6osq618jsr2g58.apps.googleusercontent.com"
+client_secret = "-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"
 redirect_uri = "https://127.0.0.1:5000/callback"
 
 # Google OAuth 2.0クライアントを作成します

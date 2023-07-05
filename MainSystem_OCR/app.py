@@ -5,6 +5,7 @@ from flask_cors import CORS
 import secrets
 import json
 
+
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)  # 16バイトのランダムな値を生成
 def allowed_file(filename):
@@ -58,15 +59,34 @@ def Kirinuki():
     ################################
 
 
+def DBSystem(OCR_data):
+    print("DB")
+        #ループ
+            #PythonでSQL問い合わせ
+            #問い合わせ結果をリストに格納にする
+        #リストをjson形式に変換する json.loads(data)
+
+    #return 結果のjson変数
+ 
 
 
-@app.route('/Kirinuki')
+
+
+@app.route('api/radio',methoods=['GET'])#
+def radiosyori():
+    data=request.get_json()
+    #####受け取ったjsonデータの処理 値の検証
+
+    obj=json.loads(data)
+    Lists=list(obj.values())
+
+    ########
+    return Lists
+
+
+@app.route('/api/Kirinuki',methods=['POST'])#これはPOSTに変更しておく
 def index():
     upload_file()
-    
-
-
-        
     
 
 

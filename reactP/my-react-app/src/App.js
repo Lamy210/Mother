@@ -30,7 +30,7 @@ function MyDropzone() {
 
       const formData = new FormData();
       formData.append('file', acceptedFiles[0]);
-      const response = await fetch('http://127.0.0.1:5000', {//送る先のURL別の場所一応テストでローカルの方に送ってる
+      const response = await fetch('http://127.0.0.1:5000/api/Kirinuki', {//送る先のURL別の場所一応テストでローカルの方に送ってる
         method: 'POST',
         body: formData,
         onUploadProgress: (progressEvent) => {

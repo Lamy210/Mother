@@ -1,7 +1,7 @@
 import PyPDF2
 
 # PDFファイルを開く
-with open('./rsy2023sem1_GP21A122-5.pdf', 'rb') as pdf_file:
+with open('./rsy2023sem1_GP21A122.pdf', 'rb') as pdf_file:
 
     # PDFリーダーオブジェクトを作成
     pdf_reader = PyPDF2.PdfReader(pdf_file)

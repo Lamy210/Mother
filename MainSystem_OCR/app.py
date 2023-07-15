@@ -8,9 +8,10 @@ import base64
 import PyPDF2
 from pdf2image import convert_from_path
 import os
-
+import uuid
 
 app = Flask(__name__)
+CORS(app)
 app.secret_key = secrets.token_hex(16)  # 16バイトのランダムな値を生成
 def allowed_file(filename):
     # 受け入れる拡張子のリスト
@@ -19,17 +20,24 @@ def allowed_file(filename):
     extension = filename.rsplit('.', 1)[1].lower()
     # 拡張子が許可されたリストに含まれているかチェック
     return '.' in filename and extension in allowed_extensions
-def file_extension(file_name):
+def file_extension(file):
+    file_name = secure_filename(file.filename)
     exten = file_name.split(".")[-1]
     return exten
 
 
-def upload_file():
+def upload_file(Userid):
     # リクエストからファイルを取得
     file = request.files['file']
     if file and allowed_file(file.filename):
         # ファイルを保存する場所を指定
-        file.save('./test/' + secure_filename(file.filename))
+        save_path='./test/' + secure_filename(file.filename)
+        file.save(save_path)
+        extension=file_extension(file)
+
+        new_path='./test/'+str(Userid)+"."+extension
+        os.rename(save_path,new_path)
+
 
 
 
@@ -46,7 +54,7 @@ def upload_file():
 
 
         # レスポンスを返す
-        return jsonify({'Message': 'ファイルがアップロードされました: [' + file + ']'})
+        return jsonify({'Message': 'ファイルがアップロードされました: [' + str(file) + ']'})
     else:
         return jsonify({'Error': '対象外のファイル形式かもしれえんから確認してほしい'})
 def K_PDF(file_name,output_name):    
@@ -139,7 +147,7 @@ def Kirinuki(file_name):
 
 
 
-def DBSystem(OCR_data):
+def DBSystem(OCR_data):  ##丹治さん関係の所
     print("DB")
         #ループ
             #PythonでSQL問い合わせ
@@ -155,7 +163,9 @@ def file_to_base64(file_path):  #不使用予定
     
 @app.route('/api/Kirinuki',methods=['POST'])#これはPOSTに変更しておく
 def index():
-    upload_file()
+    uuid_v1 = uuid.uuid1()
+    response=upload_file(uuid_v1)
+    return response
     
     
 

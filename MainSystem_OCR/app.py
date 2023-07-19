@@ -39,27 +39,22 @@ def upload_file(Userid):
 
         new_path='./test/'+str(Userid)+"."+extension
         os.rename(save_path,new_path)
-
-
-
-
-
-
-    ##########################################
-    #セッションの処理を追加する
-
-
-
-
-    ###########################################
-
-
-
-        # レスポンスを返す
-        return jsonify({'Message': 'ファイルがアップロードされました: [' + str(file) + ']'})
+        return save_path
     else:
-        return jsonify({'Error': '対象外のファイル形式かもしれえんから確認してほしい'})
+        return -1
+        # レスポンスを返す
+        #return jsonify({'Message': 'ファイルがアップロードされました: [' + str(file) + ']'})
+    #else:
+       # return jsonify({'Error': '対象外のファイル形式かもしれえんから確認してほしい'})
     
+def images(imagefile):
+    image = Image.open(imagefile)
+
+    # 画像からテキストを抽出（日本語と英語）
+    text = pytesseract.image_to_string(image, lang='jpn+eng')
+
+    # 抽出されたテキストを表示
+    print(text)
 #PDFの画像から切り抜き、画像を保存する処理（現在のファイル名,出力ファイル名,Tmpファイル名,座標＊4）
 def K_PDF(file_name,output_file,tmpfile,L_x,B_y,R_x,T_y):
     # PyPDF2を使用してページを切り抜く
@@ -116,14 +111,14 @@ def Kirinuki(file_name,uuid_v1):
     tempfile=str(uuid_v1)+"tmp.pdf"
     if('pdf'==file_extension(file_name)):
         print("PDF")
-        K_PDF(file_name,output1,tempfile,L_x,B_y,R_X,T_Y)
-        K_PDF(file_name,output2,tempfile,L_x,B_y,R_X,T_Y)
-        K_PDF(file_name,output3,tempfile,L_x,B_y,R_X,T_Y)
+        K_PDF(file_name,output1,tempfile,L_x,B_y,R_X,T_Y)#前期
+        K_PDF(file_name,output2,tempfile,L_x,B_y,R_X,T_Y)#後期
+        K_PDF(file_name,output3,tempfile,L_x,B_y,R_X,T_Y)#学年
     else:
         print("images")
-        K_images(file_name,output1,L_x,B_y,R_X,T_Y)
-        K_images(file_name,output2,L_x,B_y,R_X,T_Y)
-        K_images(file_name,output3,L_x,B_y,R_X,T_Y)
+        K_images(file_name,output1,L_x,B_y,R_X,T_Y)#前期
+        K_images(file_name,output2,L_x,B_y,R_X,T_Y)#後期
+        K_images(file_name,output3,L_x,B_y,R_X,T_Y)#学年
     
 def DBSystem(OCR_data):  ##丹治さん関係の所
     print("DB")
@@ -133,32 +128,26 @@ def DBSystem(OCR_data):  ##丹治さん関係の所
         #リストをjson形式に変換する json.loads(data)
 
     #return 結果のjson変数
- 
-def file_to_base64(file_path):  #不使用予定
-    with open(file_path, "rb") as file:
-        base64_data = base64.b64encode(file.read()).decode("utf-8")
-        return base64_data
-    
 @app.route('/api/Kirinuki',methods=['POST'])#これはPOSTに変更しておく
 def index():
+    print("uuid")
     uuid_v1 = uuid.uuid1()
-    response=upload_file(uuid_v1)
+    print("uuid created")
+    file_name=upload_file(uuid_v1)
+    print("File")
     #return response
+    if(file_name!=-1):
+        Kirinuki(file_name,uuid_v1)#添え字　ファイル名,UUID
+        # 画像を開く
+        image1=str(uuid_v1)+"zenki.jpeg"
+        image2=str(uuid_v1)+"kouki.jpeg"
+        image3=str(uuid_v1)+"gakunen.jpeg"
+        images(image1)
+        images(image2)
+        images(image3)
+print("切り抜きOK")
+
     
-    Kirinuki()#添え字　ファイル名,UUID
-    # 画像を開く
-    image1=str(uuid_v1)+"zenki.jpeg"
-    image2=str(uuid_v1)+"kouki.jpeg"
-    image3=str(uuid_v1)+"gakunen.jpeg"
-
-
-    image = Image.open(image1)
-
-    # 画像からテキストを抽出（日本語と英語）
-    text = pytesseract.image_to_string(image, lang='jpn+eng')
-
-    # 抽出されたテキストを表示
-    print(text)
 
 if __name__ == '__main__':
     app.run()

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>教科書購入リスト</title>
+        <meta charset="utf-8" /> 
+        <base target="_top">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+       integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+       crossorigin="anonymous">
+       <link rel="stylesheet" type="text/css" href="./test.css" />
+        <script src="main.js"></script>
+    </head>
+    <form action="submit.php" method="POST">
+      <div class="Top">
+        <div class="header">
+      <h1>教科書リスト作成システム</h1>
+    </div>
+    <div class="main">
+      <h1>プレビュー表示</h1>
+      <p class="btn_upload">
+        画像ファイルを選択してアップロード
+        <form>
+            <input type="file" accept='image/*' onchange="previewImage(this);">
+        </form>
+        <p>
+        Preview:<br>
+            <img id="preview" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" style="max-width:200px;">
+        </p>
+      </p>  
+    </div>
+    <div class="submenu">
+      <h1>記入欄</h1>
+      <div id="box1">
+        <p>学年<br>
+          <input type="radio" name="num1" value="１回生">１回生
+          <input type="radio" name="num1" value="２回生">２回生
+          <input type="radio" name="num1" value="３回生">３回生
+          <input type="radio" name="num1" value="４回生">４回生
+          <input type="radio" name="num1" value="その他">その他
+        </p>
+      </div>
+      <div id="box2">
+        <p>学科名<br>
+          <input type="radio" name="num2" value="情報工学科(P学科)">情報工学科(P学科)
+          <input type="radio" name="num2" value="通信工学科(F学科)">通信工学科(F学科)
+          <input type="radio" name="num2" value="機械工学科(J学科)">機械工学科(J学科)
+        </p>
+      </div>
+    </div>
+    <div id="box3">
+    <input type="submit"value="送信">
+    </div>
+    <div class="footer">
+      <h1>試作品</h1>
+    </div>
+  </div>
+  
+</form>
+</html>

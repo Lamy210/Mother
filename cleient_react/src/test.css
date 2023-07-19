@@ -1,0 +1,43 @@
+.Top {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    grid-template-rows: 100px 250px 100px;
+    grid-template-areas:
+      "header header"
+      "main submenu"
+      "footer footer";
+  }
+  .header {
+    grid-area: header;
+    text-align: center;
+    background-color: brown;
+    color: ghostwhite;
+  }
+  .main {
+    grid-area: main;
+    text-align: center;
+    background-color: teal;
+    color: ghostwhite;
+    width: 100%;
+  min-height: 100vh;
+  }
+  .submenu {
+    grid-area: submenu;
+    text-align: center;
+    background-color: silver;
+    color: black;
+    width: 100%;
+    min-height: 100vh;
+  }
+  .footer {
+    position:fixed;
+    bottom:0;
+    grid-area: footer;
+    width:100%;
+    height:5vh;
+    z-index:100;
+    text-align: center;
+    background-color: silver;
+    color: ghostwhite;
+  }
+  

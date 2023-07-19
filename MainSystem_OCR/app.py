@@ -9,6 +9,8 @@ import PyPDF2
 from pdf2image import convert_from_path
 import os
 import uuid
+from PIL import Image
+import pytesseract
 
 app = Flask(__name__)
 CORS(app)
@@ -57,39 +59,7 @@ def upload_file(Userid):
         return jsonify({'Message': 'ファイルがアップロードされました: [' + str(file) + ']'})
     else:
         return jsonify({'Error': '対象外のファイル形式かもしれえんから確認してほしい'})
-def K_PDF(file_name,output_name):    
-    '''
-    with open(file_name, 'rb') as pdf_file:
-    # PDFリーダーオブジェクトを作成
-        pdf_reader = PyPDF2.PdfReader(pdf_file)
-    # ページオブジェクトを取得
-    page = pdf_reader.pages[0]
-    # 座標を指定してページを切り抜く     
-
-    #ここの設定まだです。申し訳ないです。
-
-
-    left_x = 0#??/
-    bottom_y = 100
-    right_x =0
-    top_y = 300
-
-
-
-
-
-
-
-
-    page.cropbox.lower_Left = (left_x, bottom_y)
-    page.cropbox.upper_right = (right_x, top_y)
-
-    # 切り抜いたページを新しいPDFファイルに保存
-    pdf_writer = PyPDF2.PdfWriter()
-    pdf_writer.add_page(page)
-    with open(output_name, 'wb') as new_pdf_file:
-        pdf_writer.write(new_pdf_file)
-'''
+    
 #PDFの画像から切り抜き、画像を保存する処理（現在のファイル名,出力ファイル名,Tmpファイル名,座標＊4）
 def K_PDF(file_name,output_file,tmpfile,L_x,B_y,R_x,T_y):
     # PyPDF2を使用してページを切り抜く
@@ -121,32 +91,40 @@ def K_PDF(file_name,output_file,tmpfile,L_x,B_y,R_x,T_y):
 
 
 
-def K_images(file_name):
-    print("切り抜き")
+def K_images(file_name, output_file, L_x, B_y, R_x, T_y):
+    # 画像を開く
+    image = Image.open(file_name)
+
+    left_x = L_x  # 左上のx座標
+    bottom_y = B_y  # 左上のy座標
+    right_x = R_x  # 右下のx座標
+    top_y = T_y  # 右下のy座標
+
+    # 画像を切り抜く
+    cropped_image = image.crop((left_x, bottom_y, right_x, top_y))
+
+    # 切り抜いた画像をJPEGファイルとして保存
+    cropped_image.save(output_file, 'JPEG')
 
 
-
-def Kirinuki(file_name):
+def Kirinuki(file_name,uuid_v1):
     print("切り抜き")
     #ファイルの拡張子を判断
+    output1=str(uuid_v1)+"zenki.jpeg"
+    output2=str(uuid_v1)+"kouki.jpeg"
+    output3=str(uuid_v1)+"gakunen.jpeg"
+    tempfile=str(uuid_v1)+"tmp.pdf"
     if('pdf'==file_extension(file_name)):
         print("PDF")
-        #K_PDF(file_name,output_file,tmpfile,L_x,B_y,R_X,T_Y)
-        #K_PDF(file_name,output_file,tmpfile,L_x,B_y,R_X,T_Y)
-        #K_PDF(file_name,output_file,tmpfile,L_x,B_y,R_X,T_Y)
+        K_PDF(file_name,output1,tempfile,L_x,B_y,R_X,T_Y)
+        K_PDF(file_name,output2,tempfile,L_x,B_y,R_X,T_Y)
+        K_PDF(file_name,output3,tempfile,L_x,B_y,R_X,T_Y)
     else:
         print("images")
-        K_images()
+        K_images(file_name,output1,L_x,B_y,R_X,T_Y)
+        K_images(file_name,output2,L_x,B_y,R_X,T_Y)
+        K_images(file_name,output3,L_x,B_y,R_X,T_Y)
     
-
-
-
-
-
-
-
-
-
 def DBSystem(OCR_data):  ##丹治さん関係の所
     print("DB")
         #ループ
@@ -165,11 +143,22 @@ def file_to_base64(file_path):  #不使用予定
 def index():
     uuid_v1 = uuid.uuid1()
     response=upload_file(uuid_v1)
-    return response
+    #return response
     
-    
+    Kirinuki()#添え字　ファイル名,UUID
+    # 画像を開く
+    image1=str(uuid_v1)+"zenki.jpeg"
+    image2=str(uuid_v1)+"kouki.jpeg"
+    image3=str(uuid_v1)+"gakunen.jpeg"
 
 
+    image = Image.open(image1)
+
+    # 画像からテキストを抽出（日本語と英語）
+    text = pytesseract.image_to_string(image, lang='jpn+eng')
+
+    # 抽出されたテキストを表示
+    print(text)
 
 if __name__ == '__main__':
     app.run()

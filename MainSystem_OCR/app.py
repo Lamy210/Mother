@@ -39,22 +39,6 @@ def upload_file(Userid):
 
         new_path='./test/'+str(Userid)+"."+extension
         os.rename(save_path,new_path)
-
-
-
-
-
-
-    ##########################################
-    #セッションの処理を追加する
-
-
-
-
-    ###########################################
-
-
-
         # レスポンスを返す
         return jsonify({'Message': 'ファイルがアップロードされました: [' + str(file) + ']'})
     else:

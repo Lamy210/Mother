@@ -91,20 +91,18 @@ def K_PDF(file_name,output_file,tmpfile,L_x,B_y,R_x,T_y):
     page.cropbox.upper_right = (R_x, T_y)
 
     # 切り抜いたページを一時的なPDFファイルに保存
-    temp_pdf_path = tmpfile
     pdf_writer = PyPDF2.PdfWriter()
     pdf_writer.add_page(page)
-    with open(temp_pdf_path, 'wb') as temp_pdf_file:
+    with open(tmpfile, 'wb') as temp_pdf_file:
         pdf_writer.write(temp_pdf_file)
 
     # 一時的なPDFファイルから画像を抽出
-    images = convert_from_path(temp_pdf_path, first_page=1, last_page=1)
-    if images:
-        images[0].save(output_file, 'JPEG')
-
+    # images = convert_from_path(tmpfile, first_page=1, last_page=1)
+    # if images:
+    #     images[0].save(output_file, 'JPEG')
+    
     # 一時的なPDFファイルを削除
-    os.remove(temp_pdf_path)
-
+    #os.remove(tmpfile)
 
 
 def K_images(file_name, output_file, L_x, B_y, R_x, T_y):
@@ -162,12 +160,12 @@ def index():
         image1=str(uuid_v1)+"zenki.jpeg"
         image2=str(uuid_v1)+"kouki.jpeg"
         image3=str(uuid_v1)+"gakunen.jpeg"
-        images(image1)
+        images("./test/"+image1)
         images(image2)
         images(image3)
-    print("OK")
+    print("完了")
 
     
 
 if __name__ == '__main__':
-    app.run()#app.run(debug=True))
+    app.run(app.run(debug=True))

@@ -38,11 +38,11 @@ function MyDropzone() {
           setUploadProgress(progress);
         }
       });
-      if (response.ok) {
-        alert('ファイルがアップロードされました');
-      } else {
-        alert('ファイルのアップロードに失敗しました');
-      }
+      //if (response.ok) {
+       // alert('ファイルがアップロードされました');
+      //} else {
+//        alert('ファイルのアップロードに失敗しました');
+  //    }
       setUploading(false);
     }
     const {getRootProps, getInputProps} = useDropzone({accept:'application/pdf',onDrop,});
